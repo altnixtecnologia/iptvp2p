@@ -1,19 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
-    getRealMatches();
+    getRapidApiMatches(); // Mudamos o nome da função para a nova API
     setupChat();
 });
 
 // =========================================================================
-// LÓGICA DA API DE FUTEBOL
+// LÓGICA DA NOVA API DE FUTEBOL (RapidAPI)
 // =========================================================================
-async function getRealMatches() {
-    // Insira sua chave de API aqui. Apenas a chave, dentro das aspas.
-    const apiKey = 'e32f3474261d4ee387d09471e2808205';
+async function getRapidApiMatches() {
+    // -----------------------------------------------------------------------
+    // 1. INSIRA SUA *NOVA* CHAVE GERADA NA RAPIDAPI AQUI
+    // -----------------------------------------------------------------------
+    const rapidApiKey = '9970670024msh21b2f0db829b872p155061jsn4331dbed709d';
 
-    // Esta verificação garante que a chave foi alterada.
-    if (apiKey === 'e32f3474261d4ee387d09471e2808205') {
-        document.getElementById('football-title').innerText = 'Insira a Chave da API no script.js';
-        return; // Para a execução se a chave não foi inserida
+    if (rapidApiKey === '9970670024msh21b2f0db829b872p155061jsn4331dbed709d') {
+        document.getElementById('football-title').innerText = 'Insira sua chave da RapidAPI no script.js';
+        return;
     }
 
     const matchListContainer = document.getElementById('match-list-dynamic');
@@ -27,40 +28,60 @@ async function getRealMatches() {
     const formattedDate = `${yyyy}-${mm}-${dd}`;
 
     footballTitle.innerText = `Jogos do Dia - ${dd}/${mm}/${yyyy}`;
-    const apiUrl = `https://api.football-data.org/v4/matches?date=${formattedDate}`;
-    const desiredCompetitions = ['BSA', 'CL', 'CLI']; // Brasileirão, Champions, Libertadores
+    
+    // -----------------------------------------------------------------------
+    // 2. VERIFIQUE SE O ENDPOINT ESTÁ CORRETO
+    // URL da API para buscar os jogos de hoje. Verifique na documentação se é essa a URL correta.
+    // -----------------------------------------------------------------------
+    const apiUrl = `https://wosti-futebol-tv-brasil.p.rapidapi.com/api/Matches/date/${formattedDate}`;
 
     try {
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
-                // Esta é a linha que foi corrigida
-                'X-Auth-Token': apiKey
+                'x-rapidapi-host': 'wosti-futebol-tv-brasil.p.rapidapi.com',
+                'x-rapidapi-key': rapidApiKey
             }
         });
 
-        const data = await response.json();
+        // A resposta da RapidAPI geralmente vem dentro de um objeto, vamos extrair os dados
+        const responseData = await response.json();
+        
+        // A maioria das APIs retorna uma lista (array) de jogos. Verifique a documentação para saber o nome exato.
+        // Vou assumir que a lista se chama 'matches' ou que a resposta já é a própria lista.
+        const matches = responseData.matches || responseData; 
 
-        // Se a API retornar uma mensagem de erro (ex: chave inválida), ela será mostrada
-        if (data.message) {
-            throw new Error(data.message);
+        if (!response.ok) {
+             // Se a API retornar um erro (chave inválida, etc.), ele será capturado aqui
+            throw new Error(matches.message || 'Erro na comunicação com a API.');
         }
 
-        const filteredMatches = data.matches.filter(match => desiredCompetitions.includes(match.competition.code));
-        
-        if (filteredMatches.length === 0) {
-            matchListContainer.innerHTML = '<p style="color: #fff;">Nenhum jogo das ligas principais (Série A, Champions, Libertadores) agendado para hoje.</p>';
+        if (matches.length === 0) {
+            matchListContainer.innerHTML = '<p style="color: #fff;">Nenhum jogo encontrado para hoje nesta API.</p>';
             return;
         }
 
         matchListContainer.innerHTML = '';
-        filteredMatches.forEach(match => {
+
+        // -----------------------------------------------------------------------
+        // 3. ADAPTAÇÃO AO FORMATO DA RESPOSTA
+        // O código abaixo assume que cada 'jogo' tem as propriedades:
+        // 'championship', 'homeTeam', 'awayTeam' e 'matchTime'.
+        // Se os nomes forem diferentes, ajuste-os aqui.
+        // -----------------------------------------------------------------------
+        matches.forEach(match => {
             const matchElement = document.createElement('div');
             matchElement.className = 'match-item';
-            const matchTime = new Date(match.utcDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
-            matchElement.innerHTML = `<span class="championship">${match.competition.name}</span><span class="teams">${match.homeTeam.name} vs ${match.awayTeam.name}</span><span class="time">Hoje - ${matchTime}</span>`;
+
+            matchElement.innerHTML = `
+                <span class="championship">${match.championship || 'Campeonato'}</span>
+                <span class="teams">${match.homeTeam || 'Time Casa'} vs ${match.awayTeam || 'Time Visitante'}</span>
+                <span class="time">Hoje - ${match.matchTime || 'Horário'}</span>
+            `;
+            
             matchListContainer.appendChild(matchElement);
         });
+
     } catch (error) {
         console.error('Erro ao buscar os jogos:', error);
         footballTitle.innerText = 'Agenda de Jogos';
@@ -69,7 +90,7 @@ async function getRealMatches() {
 }
 
 // =========================================================================
-// LÓGICA DO CHAT DE DÚVIDAS
+// LÓGICA DO CHAT DE DÚVIDAS (Continua a mesma)
 // =========================================================================
 function setupChat() {
     const chatToggle = document.getElementById('chat-toggle');
@@ -81,7 +102,7 @@ function setupChat() {
         'pagamento': { q: 'Quais as formas de pagamento?', a: 'Aceitamos PIX e Cartão de Crédito. O pagamento é feito de forma 100% segura e a liberação é imediata.' },
         'como_funciona': { q: 'Como funciona o serviço?', a: 'Após a assinatura, você recebe um usuário e senha para acessar nosso aplicativo exclusivo em sua TV Smart, Celular ou TV Box.' },
         'teste': { q: 'Posso fazer um teste grátis?', a: 'Sim! Oferecemos um teste gratuito para você conhecer nosso serviço sem compromisso. Chame um de nossos atendentes no WhatsApp para solicitar.' },
-        'atendente': { q: 'Falar com um atendente', a: 'Claro! Clique aqui para ser direcionado ao nosso WhatsApp: <a href="https://wa.me/5S548991004780?text=Olá!%20Vim%20pelo%20chat%20do%20site%20e%20preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>' }
+        'atendente': { q: 'Falar com um atendente', a: 'Claro! Clique aqui para ser direcionado ao nosso WhatsApp: <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20chat%20do%20site%20e%20preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>' }
     };
     if (!chatToggle) return;
     chatToggle.addEventListener('click', () => chatWidget.style.display = 'flex');
