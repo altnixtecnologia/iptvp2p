@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicia a busca pelos jogos de futebol
     getRealMatches();
-
-    // Inicia a lógica do Chat de Dúvidas
     setupChat();
 });
 
@@ -10,19 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // LÓGICA DA API DE FUTEBOL
 // =========================================================================
 async function getRealMatches() {
-    // COLOQUE SUA CHAVE REAL AQUI NOVAMENTE
-    const apiKey = 'e32f3474261d4ee387d09471e2808205'; // <-- Use sua NOVA chave aqui
+    // Insira sua chave de API aqui. Apenas a chave, dentro das aspas.
+    const apiKey = 'e32f3474261d4ee387d09471e2808205';
 
-    // --- INÍCIO DO TESTE DE DEPURAÇÃO ---
-    alert("O script está sendo executado.");
-    alert("O valor da variável apiKey é: " + apiKey);
-    // --- FIM DO TESTE DE DEPURAÇÃO ---
-
-    // A verificação original (deixamos por enquanto para ver o que acontece)
+    // Esta verificação garante que a chave foi alterada.
     if (apiKey === 'e32f3474261d4ee387d09471e2808205') {
-        alert("ALERTA: A condição IF foi ativada, o que não deveria acontecer!");
         document.getElementById('football-title').innerText = 'Insira a Chave da API no script.js';
-        return;
+        return; // Para a execução se a chave não foi inserida
     }
 
     const matchListContainer = document.getElementById('match-list-dynamic');
@@ -40,7 +31,7 @@ async function getRealMatches() {
     const desiredCompetitions = ['BSA', 'CL', 'CLI'];
 
     try {
-        const response = await fetch(apiUrl, { headers: { 'X-Auth-Token': apiKey } });
+        const response = await fetch(apiUrl, { headers: { 'X--Auth-Token': apiKey } });
         const data = await response.json();
         const filteredMatches = data.matches.filter(match => desiredCompetitions.includes(match.competition.code));
         
@@ -73,41 +64,22 @@ function setupChat() {
     const closeChat = document.getElementById('close-chat');
     const messagesContainer = document.getElementById('chat-messages');
     const optionsContainer = document.getElementById('chat-options');
-
-    // Base de Conhecimento (Perguntas e Respostas)
     const faqs = {
-        'pagamento': {
-            q: 'Quais as formas de pagamento?',
-            a: 'Aceitamos PIX e Cartão de Crédito. O pagamento é feito de forma 100% segura e a liberação é imediata.'
-        },
-        'como_funciona': {
-            q: 'Como funciona o serviço?',
-            a: 'Após a assinatura, você recebe um usuário e senha para acessar nosso aplicativo exclusivo em sua TV Smart, Celular ou TV Box.'
-        },
-        'teste': {
-            q: 'Posso fazer um teste grátis?',
-            a: 'Sim! Oferecemos um teste gratuito para você conhecer nosso serviço sem compromisso. Chame um de nossos atendentes no WhatsApp para solicitar.'
-        },
-        'atendente': {
-            q: 'Falar com um atendente',
-            a: 'Claro! Clique aqui para ser direcionado ao nosso WhatsApp: <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20chat%20do%20site%20e%20preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>'
-        }
+        'pagamento': { q: 'Quais as formas de pagamento?', a: 'Aceitamos PIX e Cartão de Crédito. O pagamento é feito de forma 100% segura e a liberação é imediata.' },
+        'como_funciona': { q: 'Como funciona o serviço?', a: 'Após a assinatura, você recebe um usuário e senha para acessar nosso aplicativo exclusivo em sua TV Smart, Celular ou TV Box.' },
+        'teste': { q: 'Posso fazer um teste grátis?', a: 'Sim! Oferecemos um teste gratuito para você conhecer nosso serviço sem compromisso. Chame um de nossos atendentes no WhatsApp para solicitar.' },
+        'atendente': { q: 'Falar com um atendente', a: 'Claro! Clique aqui para ser direcionado ao nosso WhatsApp: <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20chat%20do%20site%20e%20preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>' }
     };
-
-    // Abre e fecha o chat
+    if (!chatToggle) return; // Adiciona uma verificação para segurança
     chatToggle.addEventListener('click', () => chatWidget.style.display = 'flex');
     closeChat.addEventListener('click', () => chatWidget.style.display = 'none');
-
-    // Função para adicionar mensagens na tela
     function addMessage(text, sender) {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${sender}`;
-        messageElement.innerHTML = text; // innerHTML para renderizar o link de WhatsApp
+        messageElement.innerHTML = text;
         messagesContainer.appendChild(messageElement);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight; // Rola para a última mensagem
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
-
-    // Função para mostrar as opções de perguntas
     function showOptions() {
         optionsContainer.innerHTML = '';
         for (const key in faqs) {
@@ -118,22 +90,11 @@ function setupChat() {
             optionsContainer.appendChild(button);
         }
     }
-
-    // Função que lida com o clique em uma opção
     function handleOptionClick(event) {
         const key = event.target.dataset.key;
-        const question = faqs[key].q;
-        const answer = faqs[key].a;
-
-        addMessage(question, 'user');
-        
-        // Simula o "robô digitando"
-        setTimeout(() => {
-            addMessage(answer, 'bot');
-        }, 500);
+        addMessage(faqs[key].q, 'user');
+        setTimeout(() => { addMessage(faqs[key].a, 'bot'); }, 500);
     }
-
-    // Inicia a conversa
     addMessage('Olá! Sou seu assistente virtual. Como posso te ajudar hoje?', 'bot');
     showOptions();
 }
