@@ -28,11 +28,24 @@ async function getRealMatches() {
 
     footballTitle.innerText = `Jogos do Dia - ${dd}/${mm}/${yyyy}`;
     const apiUrl = `https://api.football-data.org/v4/matches?date=${formattedDate}`;
-    const desiredCompetitions = ['BSA', 'CL', 'CLI'];
+    const desiredCompetitions = ['BSA', 'CL', 'CLI']; // Brasileirão, Champions, Libertadores
 
     try {
-        const response = await fetch(apiUrl, { headers: { 'X--Auth-Token': apiKey } });
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                // Esta é a linha que foi corrigida
+                'X-Auth-Token': apiKey
+            }
+        });
+
         const data = await response.json();
+
+        // Se a API retornar uma mensagem de erro (ex: chave inválida), ela será mostrada
+        if (data.message) {
+            throw new Error(data.message);
+        }
+
         const filteredMatches = data.matches.filter(match => desiredCompetitions.includes(match.competition.code));
         
         if (filteredMatches.length === 0) {
@@ -51,7 +64,7 @@ async function getRealMatches() {
     } catch (error) {
         console.error('Erro ao buscar os jogos:', error);
         footballTitle.innerText = 'Agenda de Jogos';
-        matchListContainer.innerHTML = '<p style="color: #ffcccc;">Não foi possível carregar a agenda. Verifique sua chave de API.</p>';
+        matchListContainer.innerHTML = `<p style="color: #ffcccc;">Não foi possível carregar a agenda. Erro: ${error.message}</p>`;
     }
 }
 
@@ -68,9 +81,9 @@ function setupChat() {
         'pagamento': { q: 'Quais as formas de pagamento?', a: 'Aceitamos PIX e Cartão de Crédito. O pagamento é feito de forma 100% segura e a liberação é imediata.' },
         'como_funciona': { q: 'Como funciona o serviço?', a: 'Após a assinatura, você recebe um usuário e senha para acessar nosso aplicativo exclusivo em sua TV Smart, Celular ou TV Box.' },
         'teste': { q: 'Posso fazer um teste grátis?', a: 'Sim! Oferecemos um teste gratuito para você conhecer nosso serviço sem compromisso. Chame um de nossos atendentes no WhatsApp para solicitar.' },
-        'atendente': { q: 'Falar com um atendente', a: 'Claro! Clique aqui para ser direcionado ao nosso WhatsApp: <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20chat%20do%20site%20e%20preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>' }
+        'atendente': { q: 'Falar com um atendente', a: 'Claro! Clique aqui para ser direcionado ao nosso WhatsApp: <a href="https://wa.me/5S548991004780?text=Olá!%20Vim%20pelo%20chat%20do%20site%20e%20preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>' }
     };
-    if (!chatToggle) return; // Adiciona uma verificação para segurança
+    if (!chatToggle) return;
     chatToggle.addEventListener('click', () => chatWidget.style.display = 'flex');
     closeChat.addEventListener('click', () => chatWidget.style.display = 'none');
     function addMessage(text, sender) {
