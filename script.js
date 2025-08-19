@@ -7,10 +7,10 @@ async function getRealMatches() {
     // -----------------------------------------------------------------------
     // PASSO 1: INSIRA SUA *NOVA* CHAVE DA API AQUI (A ANTIGA FOI EXPOSTA!)
     // -----------------------------------------------------------------------
-    const apiKey = 'COLE_AQUI_SUA_NOVA_CHAVE_GERADA_NO_SITE';
+    const apiKey = 8daeca9075894ea59785818f0b4e8428;
 
     // Verificação para garantir que a chave foi inserida
-    if (apiKey === 'COLE_AQUI_SUA_NOVA_CHAVE_GERADA_NO_SITE') {
+    if (apiKey === 8daeca9075894ea59785818f0b4e8428) {
         alert('ATENÇÃO: Vá ao site football-data.org, gere uma NOVA chave de API e cole no arquivo script.js!');
         return;
     }
