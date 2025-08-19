@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // LÓGICA DA API DE FUTEBOL
 // =========================================================================
 async function getRealMatches() {
-    const apiKey = 'e32f3474261d4ee387d09471e2808205'; // 
+    const apiKey = 'e32f3474261d4ee387d09471e2808205'; // <-- IMPORTANTE: INSIRA SUA CHAVE AQUI
 
     if (apiKey === 'e32f3474261d4ee387d09471e2808205') {
         document.getElementById('football-title').innerText = 'Insira a Chave da API no script.js';
