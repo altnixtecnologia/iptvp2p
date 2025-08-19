@@ -1,8 +1,13 @@
-/* Estilos Gerais */
-body {
-font-family: Arial, sans-serif;
+/* Estilos Gerais e Reset */
+
+{
+box-sizing: border-box;
 margin: 0;
 padding: 0;
+}
+
+body {
+font-family: 'Arial', sans-serif;
 background-color: #f4f4f4;
 color: #333;
 line-height: 1.6;
@@ -19,7 +24,7 @@ padding: 20px 0;
 display: inline-block;
 background-color: #007bff;
 color: #fff;
-padding: 10px 20px;
+padding: 12px 25px;
 border-radius: 5px;
 text-decoration: none;
 transition: background-color 0.3s ease;
@@ -32,9 +37,9 @@ font-size: 1em;
 background-color: #0056b3;
 }
 
-/* Header/Hero Section */
+/* Header (Hero Section) */
 .hero {
-background-color: #343a40;
+background-color: #212529;
 color: #fff;
 text-align: center;
 padding: 80px 20px;
@@ -67,45 +72,53 @@ background-color: #6c757d;
 background-color: #5a6268;
 }
 
-/* Features Section */
-.features {
-text-align: center;
+/* Seção de Imagens */
+.image-showcase {
 padding: 40px 0;
+text-align: center;
 }
 
-.features h2 {
+.image-showcase h2 {
 font-size: 2em;
 margin-bottom: 30px;
 }
 
-.feature-grid {
+.image-grid {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 30px;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 20px;
+justify-content: center;
 }
 
-.feature-item {
+.image-item {
 background-color: #fff;
-padding: 30px;
 border-radius: 8px;
-box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+overflow: hidden;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+text-align: left;
 }
 
-.feature-item i {
-font-size: 3em;
-color: #007bff;
-margin-bottom: 15px;
+.image-item img {
+width: 100%;
+height: 200px;
+object-fit: cover;
 }
 
-.feature-item h3 {
+.image-item h3 {
+padding: 15px 20px 0;
 font-size: 1.5em;
-margin-bottom: 10px;
 }
 
-/* Plans Section */
+.image-item p {
+padding: 0 20px 20px;
+font-size: 1em;
+color: #666;
+}
+
+/* Seção de Planos */
 .plans {
-text-align: center;
 padding: 40px 0;
+text-align: center;
 }
 
 .plans h2 {
@@ -124,7 +137,7 @@ justify-content: center;
 background-color: #fff;
 padding: 30px;
 border-radius: 8px;
-box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 text-align: left;
 transition: transform 0.3s ease;
 }
@@ -135,7 +148,7 @@ transform: translateY(-5px);
 
 .plan-card.featured {
 border: 2px solid #007bff;
-box-shadow: 0 4px 10px rgba(0,123,255,0.2);
+box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
 .plan-card h3 {
@@ -174,54 +187,50 @@ text-align: center;
 
 /* Footer */
 footer {
-background-color: #343a40;
+background-color: #212529;
 color: #fff;
 text-align: center;
 padding: 20px 0;
 margin-top: 40px;
 }
 
-/* WhatsApp Flutuante */
+/* Botão Flutuante do WhatsApp */
 .whatsapp-float {
 position: fixed;
-width: 55px;
-height: 55px;
+width: 60px;
+height: 60px;
 bottom: 30px;
 right: 30px;
 background-color: #25D366;
 color: #FFF;
 border-radius: 50%;
 text-align: center;
-font-size: 28px;
-box-shadow: 2px 2px 3px #999;
+font-size: 30px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 z-index: 100;
 display: flex;
-align-items: center;
 justify-content: center;
+align-items: center;
 text-decoration: none;
-transition: background-color 0.3s ease;
+transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .whatsapp-float:hover {
 background-color: #1DA851;
+transform: scale(1.1);
 }
 
-.whatsapp-float i {
-margin-top: -3px;
-}
-
-/* Chatbot/FAQ Popup */
+/* Popup de FAQ/Atendimento Automatizado */
 .chat-popup {
 display: none;
 position: fixed;
-bottom: 90px;
+bottom: 100px;
 right: 30px;
 width: 350px;
 max-height: 400px;
 background-color: #fff;
-border: 1px solid #ccc;
 border-radius: 10px;
-box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 z-index: 99;
 flex-direction: column;
 overflow: hidden;
@@ -337,25 +346,11 @@ background-color: #ccc;
 cursor: not-allowed;
 }
 
-/* Responsividade Básica */
+/* Responsividade */
 @media (max-width: 768px) {
-.hero h1 {
-font-size: 2em;
-}
-
-.hero p {
-    font-size: 1em;
-}
-
-.hero .btn {
-    margin-bottom: 10px;
-    margin-right: 0;
-    width: 100%;
-}
-
-.feature-grid, .plan-grid {
-    grid-template-columns: 1fr;
-}
+.hero h1 { font-size: 2em; }
+.hero p { font-size: 1em; }
+.hero .btn { margin-bottom: 10px; width: 100%; }
 
 .whatsapp-float {
     width: 50px;
@@ -366,26 +361,22 @@ font-size: 2em;
 }
 
 .chat-popup {
-    width: 95%;
-    left: 2.5%;
+    width: 90%;
+    left: 5%;
     right: auto;
-    bottom: 70px;
+    bottom: 80px;
     max-height: 60vh;
 }
 }
 
 @media (max-width: 480px) {
-.hero {
-padding: 60px 15px;
-}
+.hero { padding: 60px 15px; }
+.hero h1 { font-size: 1.8em; }
+.hero p { font-size: 0.9em; }
 
-.hero h1 {
-    font-size: 1.8em;
-}
-
-.hero p {
-    font-size: 0.9em;
-}
+.image-item img { height: 180px; }
+.image-item h3 { font-size: 1.3em; }
+.image-item p { font-size: 0.9em; }
 
 .whatsapp-float {
     width: 45px;
@@ -396,7 +387,6 @@ padding: 60px 15px;
 }
 
 .chat-popup {
-    bottom: 60px;
+    bottom: 70px;
 }
 }
-```
