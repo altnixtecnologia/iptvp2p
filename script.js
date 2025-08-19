@@ -1,60 +1,39 @@
-// Adicione um ouvinte para executar nosso código quando o HTML da página estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicia a busca pelos jogos de futebol
     getRealMatches();
+
+    // Inicia a lógica do Chat de Dúvidas
+    setupChat();
 });
 
+// =========================================================================
+// LÓGICA DA API DE FUTEBOL
+// =========================================================================
 async function getRealMatches() {
-    // -----------------------------------------------------------------------
-    // PASSO 1: INSIRA SUA *NOVA* CHAVE DA API AQUI (A ANTIGA FOI EXPOSTA!)
-    // -----------------------------------------------------------------------
-    const apiKey = 8daeca9075894ea59785818f0b4e8428;
+    const apiKey = 'COLE_AQUI_SUA_NOVA_CHAVE_GERADA_NO_SITE'; // <-- IMPORTANTE: INSIRA SUA CHAVE AQUI
 
-    // Verificação para garantir que a chave foi inserida
-    if (apiKey === 8daeca9075894ea59785818f0b4e8428) {
-        alert('ATENÇÃO: Vá ao site football-data.org, gere uma NOVA chave de API e cole no arquivo script.js!');
+    if (apiKey === 'COLE_AQUI_SUA_NOVA_CHAVE_GERADA_NO_SITE') {
+        document.getElementById('football-title').innerText = 'Insira a Chave da API no script.js';
         return;
     }
 
-    // Pega as referências aos elementos HTML que vamos manipular
     const matchListContainer = document.getElementById('match-list-dynamic');
     const footballTitle = document.getElementById('football-title');
-    
-    // Mostra uma mensagem de carregamento para o usuário
     matchListContainer.innerHTML = '<p style="color: #fff;">Buscando jogos de hoje...</p>';
 
-    // Pega a data de hoje e formata para YYYY-MM-DD
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const dd = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${yyyy}-${mm}-${dd}`;
 
-    // Atualiza o título da seção com a data de hoje
     footballTitle.innerText = `Jogos do Dia - ${dd}/${mm}/${yyyy}`;
-
-    // Monta a URL da API para buscar os jogos da data de hoje
     const apiUrl = `https://api.football-data.org/v4/matches?date=${formattedDate}`;
-
-    // Lista de campeonatos que nos interessam (códigos da API)
-    const desiredCompetitions = [
-        'BSA', // Brasileirão Série A
-        'CL',  // UEFA Champions League
-        'CLI', // Copa Libertadores
-    ];
+    const desiredCompetitions = ['BSA', 'CL', 'CLI'];
 
     try {
-        // Faz a chamada à API usando a sua chave
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'X-Auth-Token': apiKey
-            }
-        });
-
-        // Converte a resposta em formato JSON
+        const response = await fetch(apiUrl, { headers: { 'X-Auth-Token': apiKey } });
         const data = await response.json();
-
-        // Filtra os jogos para mostrar apenas os dos campeonatos que definimos na lista
         const filteredMatches = data.matches.filter(match => desiredCompetitions.includes(match.competition.code));
         
         if (filteredMatches.length === 0) {
@@ -62,27 +41,91 @@ async function getRealMatches() {
             return;
         }
 
-        // Limpa a mensagem de "carregando"
         matchListContainer.innerHTML = '';
-
-        // Cria o HTML para cada jogo encontrado
         filteredMatches.forEach(match => {
             const matchElement = document.createElement('div');
             matchElement.className = 'match-item';
-            
-            // Converte a hora UTC da API para a hora local do Brasil (Florianópolis)
-            const matchTime = new Date(match.utcDate).toLocaleTimeString('pt-BR', {
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZone: 'America/Sao_Paulo'
-            });
+            const matchTime = new Date(match.utcDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
+            matchElement.innerHTML = `<span class="championship">${match.competition.name}</span><span class="teams">${match.homeTeam.name} vs ${match.awayTeam.name}</span><span class="time">Hoje - ${matchTime}</span>`;
+            matchListContainer.appendChild(matchElement);
+        });
+    } catch (error) {
+        console.error('Erro ao buscar os jogos:', error);
+        footballTitle.innerText = 'Agenda de Jogos';
+        matchListContainer.innerHTML = '<p style="color: #ffcccc;">Não foi possível carregar a agenda. Verifique sua chave de API.</p>';
+    }
+}
 
-            // Cria o HTML para o jogo
-            matchElement.innerHTML = `
-                <span class="championship">${match.competition.name}</span>
-                <span class="teams">${match.homeTeam.name} vs ${match.awayTeam.name}</span>
-                <span class="time">Hoje - ${matchTime}</span>
-            `;
-            
-            // Adiciona o elemento do jogo na lista do site
-            match
+// =========================================================================
+// LÓGICA DO CHAT DE DÚVIDAS
+// =========================================================================
+function setupChat() {
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatWidget = document.getElementById('chat-widget');
+    const closeChat = document.getElementById('close-chat');
+    const messagesContainer = document.getElementById('chat-messages');
+    const optionsContainer = document.getElementById('chat-options');
+
+    // Base de Conhecimento (Perguntas e Respostas)
+    const faqs = {
+        'pagamento': {
+            q: 'Quais as formas de pagamento?',
+            a: 'Aceitamos PIX e Cartão de Crédito. O pagamento é feito de forma 100% segura e a liberação é imediata.'
+        },
+        'como_funciona': {
+            q: 'Como funciona o serviço?',
+            a: 'Após a assinatura, você recebe um usuário e senha para acessar nosso aplicativo exclusivo em sua TV Smart, Celular ou TV Box.'
+        },
+        'teste': {
+            q: 'Posso fazer um teste grátis?',
+            a: 'Sim! Oferecemos um teste gratuito para você conhecer nosso serviço sem compromisso. Chame um de nossos atendentes no WhatsApp para solicitar.'
+        },
+        'atendente': {
+            q: 'Falar com um atendente',
+            a: 'Claro! Clique aqui para ser direcionado ao nosso WhatsApp: <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20chat%20do%20site%20e%20preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>'
+        }
+    };
+
+    // Abre e fecha o chat
+    chatToggle.addEventListener('click', () => chatWidget.style.display = 'flex');
+    closeChat.addEventListener('click', () => chatWidget.style.display = 'none');
+
+    // Função para adicionar mensagens na tela
+    function addMessage(text, sender) {
+        const messageElement = document.createElement('div');
+        messageElement.className = `message ${sender}`;
+        messageElement.innerHTML = text; // innerHTML para renderizar o link de WhatsApp
+        messagesContainer.appendChild(messageElement);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight; // Rola para a última mensagem
+    }
+
+    // Função para mostrar as opções de perguntas
+    function showOptions() {
+        optionsContainer.innerHTML = '';
+        for (const key in faqs) {
+            const button = document.createElement('button');
+            button.innerText = faqs[key].q;
+            button.dataset.key = key;
+            button.addEventListener('click', handleOptionClick);
+            optionsContainer.appendChild(button);
+        }
+    }
+
+    // Função que lida com o clique em uma opção
+    function handleOptionClick(event) {
+        const key = event.target.dataset.key;
+        const question = faqs[key].q;
+        const answer = faqs[key].a;
+
+        addMessage(question, 'user');
+        
+        // Simula o "robô digitando"
+        setTimeout(() => {
+            addMessage(answer, 'bot');
+        }, 500);
+    }
+
+    // Inicia a conversa
+    addMessage('Olá! Sou seu assistente virtual. Como posso te ajudar hoje?', 'bot');
+    showOptions();
+}
