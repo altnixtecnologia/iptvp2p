@@ -10,9 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
 // LÓGICA DA API DE FUTEBOL
 // =========================================================================
 async function getRealMatches() {
-    const apiKey = 'e32f3474261d4ee387d09471e2808205'; // <-- IMPORTANTE: INSIRA SUA CHAVE AQUI
+    // COLOQUE SUA CHAVE REAL AQUI NOVAMENTE
+    const apiKey = 'e32f3474261d4ee387d09471e2808205'; // <-- Use sua NOVA chave aqui
 
+    // --- INÍCIO DO TESTE DE DEPURAÇÃO ---
+    alert("O script está sendo executado.");
+    alert("O valor da variável apiKey é: " + apiKey);
+    // --- FIM DO TESTE DE DEPURAÇÃO ---
+
+    // A verificação original (deixamos por enquanto para ver o que acontece)
     if (apiKey === 'e32f3474261d4ee387d09471e2808205') {
+        alert("ALERTA: A condição IF foi ativada, o que não deveria acontecer!");
         document.getElementById('football-title').innerText = 'Insira a Chave da API no script.js';
         return;
     }
