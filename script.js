@@ -1,50 +1,64 @@
-// Função para carregar os jogos do dia quando a página carregar
+// Adicione um ouvinte para executar nosso código quando o HTML da página estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
-    getDailyMatches();
+    getRealMatches();
 });
 
-// --- SIMULAÇÃO DE UMA CHAMADA DE API ---
-// No mundo real, você substituiria esta função por uma chamada a uma API de esportes real.
-// Você precisaria de uma 'API Key' (chave de acesso) que o provedor da API lhe daria.
+async function getRealMatches() {
+    // -----------------------------------------------------------------------
+    // PASSO 1: INSIRA SUA *NOVA* CHAVE DA API AQUI (A ANTIGA FOI EXPOSTA!)
+    // -----------------------------------------------------------------------
+    const apiKey = 'COLE_AQUI_SUA_NOVA_CHAVE_GERADA_NO_SITE';
 
-async function getDailyMatches() {
+    // Verificação para garantir que a chave foi inserida
+    if (apiKey === 'COLE_AQUI_SUA_NOVA_CHAVE_GERADA_NO_SITE') {
+        alert('ATENÇÃO: Vá ao site football-data.org, gere uma NOVA chave de API e cole no arquivo script.js!');
+        return;
+    }
+
+    // Pega as referências aos elementos HTML que vamos manipular
     const matchListContainer = document.getElementById('match-list-dynamic');
-    matchListContainer.innerHTML = '<p style="color: #fff;">Buscando jogos de hoje...</p>'; // Mensagem de carregamento
+    const footballTitle = document.getElementById('football-title');
+    
+    // Mostra uma mensagem de carregamento para o usuário
+    matchListContainer.innerHTML = '<p style="color: #fff;">Buscando jogos de hoje...</p>';
 
-    // URL da API (EXEMPLO - esta URL é fictícia)
-    // Você precisaria substituir pela URL da API que você contratar.
-    const apiUrl = 'https://v3.football.api-sports.io/fixtures?date=2025-08-19&status=NS'; // Exemplo de URL real da Api-Football
-    const apiKey = 'SUA_CHAVE_DE_API_AQUI'; // Você precisa se cadastrar no serviço para obter uma chave
+    // Pega a data de hoje e formata para YYYY-MM-DD
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${yyyy}-${mm}-${dd}`;
 
-    // --- DADOS DE EXEMPLO (JÁ QUE NÃO TEMOS UMA CHAVE DE API AGORA) ---
-    // Se a API estivesse funcionando, os dados viriam dela. Por agora, vamos usar dados fixos.
-    const exampleData = [
-        { championship: "Campeonato Catarinense", teams: "Avaí vs Figueirense", time: "16:00" },
-        { championship: "Campeonato Gaúcho", teams: "Grêmio vs Internacional", time: "16:00" },
-        { championship: "Brasileirão Série A", teams: "Palmeiras vs São Paulo", time: "19:00" },
-        { championship: "Champions League", teams: "Barcelona vs Juventus", time: "21:00" }
+    // Atualiza o título da seção com a data de hoje
+    footballTitle.innerText = `Jogos do Dia - ${dd}/${mm}/${yyyy}`;
+
+    // Monta a URL da API para buscar os jogos da data de hoje
+    const apiUrl = `https://api.football-data.org/v4/matches?date=${formattedDate}`;
+
+    // Lista de campeonatos que nos interessam (códigos da API)
+    const desiredCompetitions = [
+        'BSA', // Brasileirão Série A
+        'CL',  // UEFA Champions League
+        'CLI', // Copa Libertadores
     ];
-    // --- FIM DOS DADOS DE EXEMPLO ---
 
     try {
-        // NO CÓDIGO REAL, VOCÊ FARIA A CHAMADA ASSIM:
-        /*
+        // Faz a chamada à API usando a sua chave
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
-                'x-rapidapi-host': 'v3.football.api-sports.io',
-                'x-rapidapi-key': apiKey
+                'X-Auth-Token': apiKey
             }
         });
-        const data = await response.json();
-        const matches = data.response; // Isso depende da estrutura da resposta da API
-        */
 
-        // Usando nossos dados de exemplo por enquanto:
-        const matches = exampleData;
+        // Converte a resposta em formato JSON
+        const data = await response.json();
+
+        // Filtra os jogos para mostrar apenas os dos campeonatos que definimos na lista
+        const filteredMatches = data.matches.filter(match => desiredCompetitions.includes(match.competition.code));
         
-        if (matches.length === 0) {
-            matchListContainer.innerHTML = '<p style="color: #fff;">Nenhum jogo importante agendado para hoje.</p>';
+        if (filteredMatches.length === 0) {
+            matchListContainer.innerHTML = '<p style="color: #fff;">Nenhum jogo das ligas principais (Série A, Champions, Libertadores) agendado para hoje.</p>';
             return;
         }
 
@@ -52,21 +66,23 @@ async function getDailyMatches() {
         matchListContainer.innerHTML = '';
 
         // Cria o HTML para cada jogo encontrado
-        matches.forEach(match => {
+        filteredMatches.forEach(match => {
             const matchElement = document.createElement('div');
             matchElement.className = 'match-item';
             
+            // Converte a hora UTC da API para a hora local do Brasil (Florianópolis)
+            const matchTime = new Date(match.utcDate).toLocaleTimeString('pt-BR', {
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZone: 'America/Sao_Paulo'
+            });
+
+            // Cria o HTML para o jogo
             matchElement.innerHTML = `
-                <span class="championship">${match.championship}</span>
-                <span class="teams">${match.teams}</span>
-                <span class="time">Hoje - ${match.time}</span>
+                <span class="championship">${match.competition.name}</span>
+                <span class="teams">${match.homeTeam.name} vs ${match.awayTeam.name}</span>
+                <span class="time">Hoje - ${matchTime}</span>
             `;
             
-            matchListContainer.appendChild(matchElement);
-        });
-
-    } catch (error) {
-        console.error('Erro ao buscar os jogos:', error);
-        matchListContainer.innerHTML = '<p style="color: #ffcccc;">Não foi possível carregar a agenda de jogos.</p>';
-    }
-}
+            // Adiciona o elemento do jogo na lista do site
+            match
