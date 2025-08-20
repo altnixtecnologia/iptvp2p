@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seu Serviço Premium - Filmes, Séries e Futebol</title>
+    
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="https://cdn.api-futebol.com.br/widgets/v1/apifutebol-tabela.js"></script>
+
 </head>
 <body>
 
@@ -17,7 +21,7 @@
             <img src="logo.jpg" alt="Logo do Serviço" class="logo-img">
             <nav>
                 <a href="#servicos">Nossos Diferenciais</a>
-                <a href="#futebol">Campeonatos</a>
+                <a href="#futebol">Tabelas</a>
                 <a href="https://wa.me/5548991004780?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20planos." class="cta-button-nav" target="_blank">Fale Conosco</a>
             </nav>
         </div>
@@ -36,39 +40,35 @@
             <h2>Por que escolher nosso serviço?</h2>
             <div class="content-grid">
                 <div class="card"><img src="futebol.jpg" alt="Futebol ao Vivo"><h3>Futebol Sem Travamentos</h3><p>Assista aos jogos do seu time em alta qualidade.</p></div>
-                <div class="card"><img src="series.jpg" alt="Séries"><h3>Sua Série Favorita Está Aqui</h3><p>Nossa biblioteca é atualizada constantemente.</p></div>
-                <div class="card"><img src="filmes.jpg" alt="Filmes"><h3>Lançamentos Primeiro Aqui</h3><p>Os maiores sucessos de bilheteria chegam antes.</p></div>
+                <div class="card"><img src="filmes-series.jpg" alt="Séries"><h3>Sua Série Favorita Está Aqui</h3><p>Nossa biblioteca é atualizada constantemente.</p></div>
+                <div class="card"><img src="filmes-series.jpg" alt="Filmes"><h3>Lançamentos Primeiro Aqui</h3><p>Os maiores sucessos de bilheteria chegam antes.</p></div>
             </div>
         </div>
     </section>
 
     <section id="futebol" class="content-section-dark">
         <div class="container">
-            <h2>Acompanhe os Principais Campeonatos</h2>
+            <h2>Tabela de Classificação</h2>
 
             <div class="widgets-grid">
                 <div class="widget-column">
                     <h3>Campeonato Brasileiro</h3>
-                    <div id="wdg_1_MEEREDD56DHZ"></div>
-                    <script type="text/javascript" src="https://api-futebol.com.br/widgets/widget_1.js?id=MEEREDD56DHZ&c=s"></script>
+                    <div class="apifutebol-tabela" data-client-id="MEEREDD56DHZ"></div>
                 </div>
 
                 <div class="widget-column">
                     <h3>Campeonato Catarinense</h3>
-                    <div id="wdg_1_PUM63CAKPVJL"></div>
-                    <script type="text/javascript" src="https://api-futebol.com.br/widgets/widget_1.js?id=PUM63CAKPVJL&c=s"></script>
+                    <div class="apifutebol-tabela" data-client-id="PUM63CAKPVJL"></div>
                 </div>
 
                 <div class="widget-column">
                     <h3>Copa Libertadores</h3>
-                    <div id="wdg_1_S5YZ3LPAWXEP"></div>
-                    <script type="text/javascript" src="https://api-futebol.com.br/widgets/widget_1.js?id=S5YZ3LPAWXEP&c=s"></script>
+                    <div class="apifutebol-tabela" data-client-id="S5YZ3LPAWXEP"></div>
                 </div>
 
                 <div class="widget-column">
                     <h3>Premier League</h3>
-                    <div id="wdg_1_XNEMWLYUY9UN"></div>
-                    <script type="text/javascript" src="https://api-futebol.com.br/widgets/widget_1.js?id=XNEMWLYUY9UN&c=s"></script>
+                    <div class="apifutebol-tabela" data-client-id="XNEMWLYUY9UN"></div>
                 </div>
             </div>
         </div>
@@ -78,15 +78,9 @@
         <p>&copy; 2025 Seu Serviço. Todos os direitos reservados.</p>
     </footer>
 
-    <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20ajuda." class="whatsapp-float" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Fale Conosco no WhatsApp">
-    </a>
+    <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20ajuda." class="whatsapp-float" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Fale Conosco no WhatsApp"></a>
     <div class="chat-toggle" id="chat-toggle"><i class="fas fa-question"></i></div>
-    <div class="chat-widget" id="chat-widget">
-        <div class="chat-header"><h3>Dúvidas Frequentes</h3><span id="close-chat">&times;</span></div>
-        <div class="chat-messages" id="chat-messages"></div>
-        <div class="chat-options" id="chat-options"></div>
-    </div>
+    <div class="chat-widget" id="chat-widget"><div class="chat-header"><h3>Dúvidas Frequentes</h3><span id="close-chat">&times;</span></div><div class="chat-messages" id="chat-messages"></div><div class="chat-options" id="chat-options"></div></div>
 
     <script src="script.js"></script>
 </body>
