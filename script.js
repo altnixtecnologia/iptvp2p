@@ -1,97 +1,104 @@
+// Este código agora roda em todas as páginas e decide o que fazer.
 document.addEventListener('DOMContentLoaded', function() {
-    getRapidApiMatches(); // Mudamos o nome da função para a nova API
+    // Se encontrar o elemento da página inicial, busca os jogos de HOJE.
+    if (document.getElementById('match-list-dynamic')) {
+        getRapidApiMatches(); 
+    }
+
+    // Se encontrar o elemento da página de resultados, busca os resultados de ONTEM.
+    if (document.getElementById('results-list-dynamic')) {
+        getRapidApiResults();
+    }
+    
+    // O chat de dúvidas funciona em todas as páginas.
     setupChat();
 });
 
-// =========================================================================
-// LÓGICA DA NOVA API DE FUTEBOL (RapidAPI)
-// =========================================================================
-async function getRapidApiMatches() {
-    // -----------------------------------------------------------------------
-    // 1. INSIRA SUA *NOVA* CHAVE GERADA NA RAPIDAPI AQUI
-    // -----------------------------------------------------------------------
-    const rapidApiKey = 'DUE2QwMFFbizWFuF7lOdoPrD3rtXkvgJYrrWI0EAy9dBx09K7Z2QcieWona3';
 
-    if (rapidApiKey === 'DUE2QwMFFbizWFuF7lOdoPrD3rtXkvgJYrrWI0EAy9dBx09K7Z2QcieWona3') {
-        document.getElementById('football-title').innerText = 'Insira sua chave da RapidAPI no script.js';
+// FUNÇÃO PARA BUSCAR JOGOS DO DIA (PÁGINA INICIAL)
+async function getRapidApiMatches() {
+    // A variável foi renomeada para 'keyapi' como solicitado.
+    const keyapi = 'SSOpjvhT8h3CFzJUIcvfPNQvTo4q5HJGmVyfxAwdOsptco7cwsz8IxYHuGh5';
+
+    if (keyapi === 'SSOpjvhT8h3CFzJUIcvfPNQvTo4q5HJGmVyfxAwdOsptco7cwsz8IxYHuGh5') {
+        document.getElementById('football-title').innerText = 'Insira sua chave da KeyAPI no script.js';
         return;
     }
 
     const matchListContainer = document.getElementById('match-list-dynamic');
     const footballTitle = document.getElementById('football-title');
-    matchListContainer.innerHTML = '<p style="color: #fff;">Buscando jogos de hoje...</p>';
 
     const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    const formattedDate = `${yyyy}-${mm}-${dd}`;
-
-    footballTitle.innerText = `Jogos do Dia - ${dd}/${mm}/${yyyy}`;
+    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    footballTitle.innerText = `Jogos do Dia - ${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
     
-    // -----------------------------------------------------------------------
-    // 2. VERIFIQUE SE O ENDPOINT ESTÁ CORRETO
-    // URL da API para buscar os jogos de hoje. Verifique na documentação se é essa a URL correta.
-    // -----------------------------------------------------------------------
     const apiUrl = `https://wosti-futebol-tv-brasil.p.rapidapi.com/api/Matches/date/${formattedDate}`;
 
     try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'x-rapidapi-host': 'wosti-futebol-tv-brasil.p.rapidapi.com',
-                'x-rapidapi-key': rapidApiKey
-            }
-        });
-
-        // A resposta da RapidAPI geralmente vem dentro de um objeto, vamos extrair os dados
+        const response = await fetch(apiUrl, { headers: { 'x-rapidapi-host': 'wosti-futebol-tv-brasil.p.rapidapi.com', 'x-rapidapi-key': keyapi } }); // Usando 'keyapi' aqui
         const responseData = await response.json();
-        
-        // A maioria das APIs retorna uma lista (array) de jogos. Verifique a documentação para saber o nome exato.
-        // Vou assumir que a lista se chama 'matches' ou que a resposta já é a própria lista.
         const matches = responseData.matches || responseData; 
-
-        if (!response.ok) {
-             // Se a API retornar um erro (chave inválida, etc.), ele será capturado aqui
-            throw new Error(matches.message || 'Erro na comunicação com a API.');
-        }
-
-        if (matches.length === 0) {
-            matchListContainer.innerHTML = '<p style="color: #fff;">Nenhum jogo encontrado para hoje nesta API.</p>';
-            return;
-        }
+        if (!response.ok) { throw new Error(matches.message || 'Erro na API.'); }
+        if (matches.length === 0) { matchListContainer.innerHTML = '<p style="color: #fff;">Nenhum jogo encontrado para hoje.</p>'; return; }
 
         matchListContainer.innerHTML = '';
-
-        // -----------------------------------------------------------------------
-        // 3. ADAPTAÇÃO AO FORMATO DA RESPOSTA
-        // O código abaixo assume que cada 'jogo' tem as propriedades:
-        // 'championship', 'homeTeam', 'awayTeam' e 'matchTime'.
-        // Se os nomes forem diferentes, ajuste-os aqui.
-        // -----------------------------------------------------------------------
         matches.forEach(match => {
             const matchElement = document.createElement('div');
             matchElement.className = 'match-item';
-
-            matchElement.innerHTML = `
-                <span class="championship">${match.championship || 'Campeonato'}</span>
-                <span class="teams">${match.homeTeam || 'Time Casa'} vs ${match.awayTeam || 'Time Visitante'}</span>
-                <span class="time">Hoje - ${match.matchTime || 'Horário'}</span>
-            `;
-            
+            matchElement.innerHTML = `<span class="championship">${match.championship || 'Campeonato'}</span><span class="teams">${match.homeTeam || 'Time Casa'} vs ${match.awayTeam || 'Time Visitante'}</span><span class="time">Hoje - ${match.matchTime || 'Horário'}</span>`;
             matchListContainer.appendChild(matchElement);
         });
-
     } catch (error) {
         console.error('Erro ao buscar os jogos:', error);
-        footballTitle.innerText = 'Agenda de Jogos';
-        matchListContainer.innerHTML = `<p style="color: #ffcccc;">Não foi possível carregar a agenda. Erro: ${error.message}</p>`;
+        matchListContainer.innerHTML = `<p style="color: #ffcccc;">Não foi possível carregar os jogos. Erro: ${error.message}</p>`;
     }
 }
 
-// =========================================================================
+
+// NOVA FUNÇÃO PARA BUSCAR RESULTADOS DO DIA ANTERIOR (PÁGINA DE RESULTADOS)
+async function getRapidApiResults() {
+    // A variável foi renomeada para 'keyapi' como solicitado.
+    const keyapi = 'COLE_AQUI_SUA_NOVA_CHAVE_DA_RAPIDAPI';
+
+    if (keyapi === 'COLE_AQUI_SUA_NOVA_CHAVE_DA_RAPIDAPI') {
+        document.getElementById('results-title').innerText = 'Insira sua chave da RapidAPI no script.js';
+        return;
+    }
+
+    const resultsListContainer = document.getElementById('results-list-dynamic');
+    const resultsTitle = document.getElementById('results-title');
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const formattedDate = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+    resultsTitle.innerText = `Resultados de Ontem - ${String(yesterday.getDate()).padStart(2, '0')}/${String(yesterday.getMonth() + 1).padStart(2, '0')}/${yesterday.getFullYear()}`;
+
+    const apiUrl = `https://wosti-futebol-tv-brasil.p.rapidapi.com/api/Matches/date/${formattedDate}`;
+
+    try {
+        const response = await fetch(apiUrl, { headers: { 'x-rapidapi-host': 'wosti-futebol-tv-brasil.p.rapidapi.com', 'x-rapidapi-key': keyapi } }); // Usando 'keyapi' aqui
+        const responseData = await response.json();
+        const matches = responseData.matches || responseData;
+        if (!response.ok) { throw new Error(matches.message || 'Erro na API.'); }
+        if (matches.length === 0) { resultsListContainer.innerHTML = '<p style="color: #fff;">Nenhum resultado encontrado para ontem.</p>'; return; }
+
+        resultsListContainer.innerHTML = '';
+        matches.forEach(match => {
+            const homeScore = match.homeScore !== undefined ? match.homeScore : '-';
+            const awayScore = match.awayScore !== undefined ? match.awayScore : '-';
+            const matchElement = document.createElement('div');
+            matchElement.className = 'match-item';
+            matchElement.innerHTML = `<span class="championship">${match.championship || 'Campeonato'}</span><span class="teams">${match.homeTeam || 'Time Casa'} <strong>${homeScore} x ${awayScore}</strong> ${match.awayTeam || 'Time Visitante'}</span><span class="time">Finalizado</span>`;
+            resultsListContainer.appendChild(matchElement);
+        });
+    } catch (error) {
+        console.error('Erro ao buscar os resultados:', error);
+        resultsListContainer.innerHTML = `<p style="color: #ffcccc;">Não foi possível carregar os resultados. Erro: ${error.message}</p>`;
+    }
+}
+
+
 // LÓGICA DO CHAT DE DÚVIDAS (Continua a mesma)
-// =========================================================================
 function setupChat() {
     const chatToggle = document.getElementById('chat-toggle');
     const chatWidget = document.getElementById('chat-widget');
@@ -99,10 +106,10 @@ function setupChat() {
     const messagesContainer = document.getElementById('chat-messages');
     const optionsContainer = document.getElementById('chat-options');
     const faqs = {
-        'pagamento': { q: 'Quais as formas de pagamento?', a: 'Aceitamos PIX e Cartão de Crédito. O pagamento é feito de forma 100% segura e a liberação é imediata.' },
-        'como_funciona': { q: 'Como funciona o serviço?', a: 'Após a assinatura, você recebe um usuário e senha para acessar nosso aplicativo exclusivo em sua TV Smart, Celular ou TV Box.' },
-        'teste': { q: 'Posso fazer um teste grátis?', a: 'Sim! Oferecemos um teste gratuito para você conhecer nosso serviço sem compromisso. Chame um de nossos atendentes no WhatsApp para solicitar.' },
-        'atendente': { q: 'Falar com um atendente', a: 'Claro! Clique aqui para ser direcionado ao nosso WhatsApp: <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20chat%20do%20site%20e%20preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>' }
+        'pagamento': { q: 'Quais as formas de pagamento?', a: 'Aceitamos PIX e Cartão de Crédito.' },
+        'como_funciona': { q: 'Como funciona o serviço?', a: 'Você recebe um usuário e senha para acessar nosso aplicativo em sua TV Smart, Celular ou TV Box.' },
+        'teste': { q: 'Posso fazer um teste grátis?', a: 'Sim! Chame um de nossos atendentes no WhatsApp para solicitar.' },
+        'atendente': { q: 'Falar com um atendente', a: 'Claro! Clique aqui para ir para o WhatsApp: <a href="https://wa.me/5548991004780?text=Olá!%20Preciso%20de%20ajuda." target="_blank">Iniciar Conversa</a>' }
     };
     if (!chatToggle) return;
     chatToggle.addEventListener('click', () => chatWidget.style.display = 'flex');
@@ -129,6 +136,6 @@ function setupChat() {
         addMessage(faqs[key].q, 'user');
         setTimeout(() => { addMessage(faqs[key].a, 'bot'); }, 500);
     }
-    addMessage('Olá! Sou seu assistente virtual. Como posso te ajudar hoje?', 'bot');
+    addMessage('Olá! Sou seu assistente virtual. Como posso te ajudar?', 'bot');
     showOptions();
 }
