@@ -62,3 +62,13 @@ footer { /* ... */ }
         grid-template-columns: 1fr;
     }
 }
+/* -- Estilo para os Títulos dos Widgets -- */
+.widget-column h3 {
+    color: var(--text-color-light); /* Usa a cor de texto clara que já definimos */
+    font-weight: 600;
+    margin-bottom: 15px; /* Cria um espaço entre o título e o widget */
+    text-transform: uppercase; /* Deixa o texto em maiúsculas, para um visual mais forte */
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Adiciona uma linha sutil abaixo do título */
+    padding-bottom: 10px;
+}
