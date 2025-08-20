@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // FUNÇÃO PARA BUSCAR JOGOS DO DIA COM A SPORTMONKS
 async function getSportMonksMatches() {
     // Insira seu API Token da SportMonks aqui
-    const sportmonksApiToken = 'COLE_AQUI_SEU_API_TOKEN_DA_SPORTMONKS';
+    const sportmonksApiToken = 'SSOpjvhT8h3CFzJUIcvfPNQvTo4q5HJGmVyfxAwdOsptco7cwsz8IxYHuGh5';
 
-    if (sportmonksApiToken === 'COLE_AQUI_SEU_API_TOKEN_DA_SPORTMONKS') {
+    if (sportmonksApiToken === 'SSOpjvhT8h3CFzJUIcvfPNQvTo4q5HJGmVyfxAwdOsptco7cwsz8IxYHuGh5') {
         document.getElementById('football-title').innerText = 'Insira seu API Token da SportMonks no script.js';
         return;
     }
