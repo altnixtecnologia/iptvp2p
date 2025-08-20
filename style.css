@@ -17,7 +17,11 @@ body { font-family: 'Poppins', sans-serif; background-color: var(--background-co
 /* CABEÇALHO */
 header { background: #fff; padding: 1rem 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
 header .container { display: flex; justify-content: space-between; align-items: center; }
-header .logo { font-weight: 700; font-size: 1.5rem; color: var(--secondary-color); }
+header .logo-img {
+    height: 40px; /* Você pode ajustar este valor se achar necessário */
+    width: auto;
+    display: block; /* Ajuda no alinhamento vertical */
+}
 header nav a { margin: 0 15px; text-decoration: none; color: var(--text-color); font-weight: 400; }
 header nav a.cta-button-nav { background: var(--primary-color); color: #fff; padding: 8px 15px; border-radius: 5px; transition: background 0.3s ease; }
 header nav a.cta-button-nav:hover { background: #008a6e; }
