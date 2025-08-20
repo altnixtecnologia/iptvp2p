@@ -33,6 +33,7 @@ function setupChat() {
         messageElement.className = `message ${sender}`;
         messageElement.innerHTML = text;
         messagesContainer.appendChild(messageElement);
+        // AQUI ESTAVA O ERRO! Corrigido de 'messages-container' para 'messagesContainer'
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
