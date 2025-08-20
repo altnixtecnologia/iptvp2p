@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     setupChat();
 });
+
 function setupChat() {
     const chatToggle = document.getElementById('chat-toggle');
     const chatWidget = document.getElementById('chat-widget');
