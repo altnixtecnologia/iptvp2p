@@ -10,9 +10,9 @@ async function getRapidApiMatches() {
     // -----------------------------------------------------------------------
     // 1. INSIRA SUA *NOVA* CHAVE GERADA NA RAPIDAPI AQUI
     // -----------------------------------------------------------------------
-    const rapidApiKey = '9970670024msh21b2f0db829b872p155061jsn4331dbed709d';
+    const rapidApiKey = 'DUE2QwMFFbizWFuF7lOdoPrD3rtXkvgJYrrWI0EAy9dBx09K7Z2QcieWona3';
 
-    if (rapidApiKey === '9970670024msh21b2f0db829b872p155061jsn4331dbed709d') {
+    if (rapidApiKey === 'DUE2QwMFFbizWFuF7lOdoPrD3rtXkvgJYrrWI0EAy9dBx09K7Z2QcieWona3') {
         document.getElementById('football-title').innerText = 'Insira sua chave da RapidAPI no script.js';
         return;
     }
