@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.api-futebol.com.br/widgets/v1/apifutebol-tabela.js"></script>
+    <script src="https://cdn.api-futebol.com.br/widgets/v1/apifutebol-rodadas.js"></script>
 </head>
 <body id="page-jogos">
     <header>
@@ -20,7 +21,7 @@
                 </div>
             </div>
             <nav>
-                <a href="index.html" class="nav-button active">Início</a>
+                <a href="index.html" class="nav-button active">Jogos</a>
                 <a href="tabelas.html">Tabelas</a>
             </nav>
         </div>
@@ -47,7 +48,10 @@
 
     <section id="futebol" class="content-section-dark">
         <div class="container">
-            <h2>Jogos da Semana</h2>
+            <div class="section-heading">
+                <h2 class="main-title">Área Esportiva</h2>
+                <p class="subtitle">Jogos da Semana</p>
+            </div>
             <div class="nav-buttons">
                 <a href="index.html" class="nav-button active">Jogos</a>
                 <a href="tabelas.html" class="nav-button">Tabelas</a>
@@ -61,10 +65,14 @@
                     <h3>Copa Libertadores</h3>
                     <iframe src="https://api.api-futebol.com.br/v1/widgets/rodadas?client_id=S5YZ3LPAWXEP" title="Rodadas da Libertadores" frameborder="0"></iframe>
                 </div>
+                <div class="widget-column">
+                    <h3>Champions League</h3>
+                    <iframe src="https://api.api-futebol.com.br/v1/widgets/rodadas?client_id=FZA4PWVSV9TE" title="Rodadas da Champions League" frameborder="0"></iframe>
+                </div>
             </div>
         </div>
     </section>
 
     <footer><p>&copy; 2025 Cadi TV. Todos os direitos reservados.</p></footer>
-    <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20ajuda." class="whatsapp-float" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Fale Conosco no WhatsApp"></a>
-    <div class="chat-toggle" id
+    
+    <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20site%20e%20g
