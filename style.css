@@ -1,19 +1,17 @@
-:root {
-    --primary-color: #00A884;
-    --secondary-color: #1F2C34;
-    --background-color: #FFFFFF;
-    --background-dark: #121212;
-    --text-color: #333;
-    --text-color-light: #f4f4f4;
-}
+/* RESET BÁSICO E VARIÁVEIS DE COR */
+:root {--primary-color:#00A884;--secondary-color:#1F2C34;--background-color:#FFFFFF;--background-dark:#121212;--text-color:#333;--text-color-light:#f4f4f4;}
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Poppins', sans-serif; background-color: var(--background-color); color: var(--text-color); line-height: 1.6; }
-.container { max-width: 900px; margin: auto; padding: 0 20px; }
+.container { max-width: 1320px; margin: auto; padding: 0 20px; }
 
 /* CABEÇALHO E NAVEGAÇÃO */
 header { background: #fff; padding: 1rem 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
 header .container { display: flex; justify-content: space-between; align-items: center; }
-header .logo-img { height: 40px; width: auto; display: block; }
+header .logo-img { 
+    height: 55px; /* Aumentado de 40px para 55px */
+    width: auto; 
+    display: block; 
+}
 header nav a { margin: 0 5px; text-decoration: none; color: #333; font-weight: 600; padding: 8px 15px; border-radius: 20px; transition: all 0.3s ease; }
 header nav a.active, header nav a:hover { background-color: var(--secondary-color); color: #fff; }
 
@@ -37,17 +35,38 @@ header nav a.active, header nav a:hover { background-color: var(--secondary-colo
 .card h3, .card p { padding: 15px; color: #333; }
 
 /* LAYOUT DOS WIDGETS DE FUTEBOL */
-.widgets-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+.widgets-grid { display: grid; gap: 20px; }
 .widget-column { background: #1F2C34; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; }
 .widget-column h3 { color: #f4f4f4; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; font-size: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; text-align: center; }
-/* Estilo para os widgets de Tabela e Rodadas */
-.widget-column iframe, .widget-column .apifutebol-tabela {
-    width: 100%;
-    border: none;
-    flex-grow: 1;
-    min-height: 600px;
-}
+.widget-column iframe, .widget-column .apifutebol-tabela, .widget-column .apifutebol-rodadas { width: 100%; border: none; flex-grow: 1; min-height: 500px; }
+#page-jogos .widgets-grid { grid-template-columns: repeat(3, 1fr); }
+#page-tabelas .widgets-grid { grid-template-columns: 1fr; max-width: 800px; margin: 0 auto; }
 
-/* RODAPÉ, CHAT E RESPONSIVIDADE */
+/* RODAPÉ E BOTÕES FLUTUANTES */
 footer { background: #1F2C34; color: #fff; text-align: center; padding: 20px 0; }
-/* ... (demais estilos do chat e botões flutuantes) ... */
+.whatsapp-float { position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px; background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center; box-shadow: 2px 2px 3px #999; z-index: 100; display: flex; justify-content: center; align-items: center; }
+.whatsapp-float img { width: 35px; height: 35px; }
+/* ... (estilos do chat) ... */
+.chat-toggle{position:fixed;width:60px;height:60px;bottom:40px;left:40px;background-color:#007bff;color:#FFF;border-radius:50px;text-align:center;box-shadow:2px 2px 3px #999;z-index:101;display:flex;justify-content:center;align-items:center;cursor:pointer;font-size:24px;}
+.chat-widget{display:none;position:fixed;bottom:120px;left:40px;width:350px;height:500px;background:#fff;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.2);z-index:100;flex-direction:column;overflow:hidden;}
+.chat-header{background:#007bff;color:#fff;padding:15px;font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+.chat-header #close-chat{cursor:pointer;font-size:24px;}
+.chat-messages{flex-grow:1;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+.message{padding:10px 15px;border-radius:20px;max-width:80%;line-height:1.4;}
+.message.bot{background:#f1f1f1;color:#000;align-self:flex-start;}
+.message.user{background:#e2ffc7;color:#000;align-self:flex-end;}
+.chat-options{padding:15px;border-top:1px solid #eee;display:flex;flex-direction:column;gap:10px;}
+.chat-options button{background:#fff;border:1px solid #007bff;color:#007bff;padding:10px;border-radius:20px;cursor:pointer;text-align:left;}
+
+/* RESPONSIVIDADE */
+@media(max-width: 1024px) { 
+    #page-jogos .widgets-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media(max-width: 768px) {
+    header nav { display: none; }
+    .hero h1 { font-size: 2.2rem; }
+    #page-jogos .widgets-grid, #page-tabelas .widgets-grid { grid-template-columns: 1fr; }
+    .chat-widget { width: 90%; height: 70%; left: 5%; bottom: 120px; }
+    .chat-toggle { left: 20px; bottom: 20px; }
+    .whatsapp-float { right: 20px; bottom: 20px; }
+}
