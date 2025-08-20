@@ -3,37 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogos da Semana - Cadi TV</title>
+    <title>Tabelas de Classificação - Cadi TV</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script src="https://cdn.api-futebol.com.br/widgets/v1/apifutebol-tabela.js"></script>
+    <script src="https://cdn.api-futebol.com.br/widgets/v1/apifutebol-rodadas.js"></script>
 </head>
-<body>
+<body id="page-tabelas">
     <header>
         <div class="container">
-            <img src="logo.jpg" alt="Logo do Serviço" class="logo-img">
+            <img src="logo.jpg" alt="Logo Cadi TV" class="logo-img">
             <nav>
-                <a href="index.html" class="nav-button active">Jogos</a>
-                <a href="tabelas.html">Tabelas</a>
+                <a href="index.html">Jogos</a>
+                <a href="tabelas.html" class="nav-button active">Tabelas</a>
             </nav>
         </div>
     </header>
-    
-    <main class="hero"></main>
-    <section id="servicos" class="content-section"></section>
 
     <section id="futebol" class="content-section-dark">
         <div class="container">
-            <h2>Jogos da Semana</h2>
+            <h2>Tabelas de Classificação</h2>
             <div class="nav-buttons">
-                <a href="index.html" class="nav-button active">Jogos</a>
-                <a href="tabelas.html" class="nav-button">Tabelas</a>
+                <a href="index.html" class="nav-button">Jogos</a>
+                <a href="tabelas.html" class="nav-button active">Tabelas</a>
             </div>
             <div class="widgets-grid">
-                <div class="widget-column">
-                    <h3>Campeonato Brasileiro</h3>
-                    <iframe src="https://api.api-futebol.com.br/v1/widgets/rodadas?client_id=MEEREDD56DHZ" title="Rodadas do Brasileirão" frameborder="0"></iframe>
-                </div>
-                <div class="widget-column">
-                    <h3>Copa Libertadores</h3>
-                    <iframe src="https://api.api-futebol.com.br/v1/widgets/rodadas?client_id=S5YZ3LPAWXEP"
+                <div class="widget-column"><h3>Campeonato Brasileiro</h3><div class="apifutebol-tabela" data-client-id="MHKZSXWJLLNK"></div></div>
+                <div class="widget-column"><h3>Copa Libertadores</h3><div class="apifutebol-tabela" data-client-id="J2YYD74AZALV"></div></div>
+                <div class="widget-column"><h3>Champions League</h3><div class="apifutebol-tabela" data-client-id="ZCPRVNZW6HUS"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <footer><p>&copy; 2025 Cadi TV. Todos os direitos reservados.</p></footer>
+    <a href="https://wa.me/5548991004780?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20ajuda." class="whatsapp-float" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Fale Conosco no WhatsApp"></a>
+    <div class="chat-toggle" id="chat-toggle"><i class="fas fa-question"></i></div>
+    <div class="chat-widget" id="chat-widget"><div class="chat-header"><h3>Dúvidas Frequentes</h3><span id="close-chat">&times;</span></div><div class="chat-messages" id="chat-messages"></div><div class="chat-options" id="chat-options"></div></div>
+    <script src="script.js"></script>
+</body>
+</html>
