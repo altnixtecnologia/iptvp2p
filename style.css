@@ -1,21 +1,38 @@
 /* RESET BÁSICO E VARIÁVEIS DE COR */
-:root { /* ... cores ... */ }
+:root {
+    --primary-color: #00A884;
+    --secondary-color: #1F2C34;
+    --background-color: #FFFFFF;
+    --background-dark: #121212;
+    --text-color: #333;
+    --text-color-light: #f4f4f4;
+    --bot-message-bg: #f1f1f1;
+    --user-message-bg: #e2ffc7;
+}
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Poppins', sans-serif; background-color: var(--background-color); color: var(--text-color); line-height: 1.6; }
 .container { max-width: 1320px; margin: auto; padding: 0 20px; }
 
-/* CABEÇALHO E SEÇÕES PRINCIPAIS (Sem alterações) */
+/* CABEÇALHO E NAVEGAÇÃO */
 header { background: #fff; padding: 1rem 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
 header .container { display: flex; justify-content: space-between; align-items: center; }
 header .logo-img { height: 40px; width: auto; display: block; }
-header nav a { margin: 0 15px; text-decoration: none; color: var(--text-color); font-weight: 400; }
-header nav a.cta-button-nav { background: #00A884; color: #fff; padding: 8px 15px; border-radius: 5px; }
+header nav a { margin: 0 5px; text-decoration: none; color: #333; font-weight: 600; padding: 8px 15px; border-radius: 20px; transition: all 0.3s ease; }
+header nav a.active, header nav a:hover { background-color: var(--secondary-color); color: #fff; }
+
+/* BOTÕES DE NAVEGAÇÃO (JOGOS/TABELAS) */
+.nav-buttons { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+.nav-button { text-decoration: none; color: #fff; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 25px; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; }
+.nav-button:hover { background-color: rgba(255, 255, 255, 0.2); }
+.nav-button.active { background-color: var(--primary-color); border-color: var(--primary-color); }
+
+/* SEÇÕES PRINCIPAIS */
 .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(propaganda.jpg) no-repeat center center/cover; min-height: 60vh; color: #fff; display: flex; justify-content: center; align-items: center; text-align: center; padding: 40px 0; }
 .hero h1 { font-size: 3rem; }
 .hero p { font-size: 1.2rem; margin-bottom: 2rem; }
-.cta-button { background: #00A884; color: #fff; padding: 15px 30px; text-decoration: none; font-size: 1.1rem; font-weight: 600; border-radius: 5px; }
+.cta-button { background: var(--primary-color); color: #fff; padding: 15px 30px; text-decoration: none; font-size: 1.1rem; font-weight: 600; border-radius: 5px; }
 .content-section { padding: 60px 0; text-align: center; }
-.content-section-dark { background: #121212; color: #f4f4f4; padding: 60px 0; text-align: center; }
+.content-section-dark { background: var(--background-dark); color: var(--text-color-light); padding: 60px 0; text-align: center; }
 .content-section h2, .content-section-dark h2 { font-size: 2.5rem; margin-bottom: 40px; }
 .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; text-align: left; }
 .card { background: #f9f9f9; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
@@ -23,19 +40,11 @@ header nav a.cta-button-nav { background: #00A884; color: #fff; padding: 8px 15p
 .card h3, .card p { padding: 15px; color: #333; }
 
 /* GRID PARA OS WIDGETS DE FUTEBOL */
-.widgets-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.widgets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .widget-column { background: #1F2C34; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; }
 .widget-column h3 { color: #f4f4f4; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; font-size: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; text-align: center; }
 
-/* Estilo para controlar os novos IFRAMES */
-.widget-column iframe {
-    width: 100%;
-    border: none;
-    flex-grow: 1; 
-    min-height: 500px; /* Ajustado para a altura padrão do novo widget */
-}
-
-/* RODAPÉ, CHAT E RESPONSIVIDADE (Sem alterações) */
+/* RODAPÉ, CHAT E RESPONSIVIDADE */
 footer { background: #1F2C34; color: #fff; text-align: center; padding: 20px 0; }
 .whatsapp-float { position: fixed; width: 60px; height: 60px; bottom: 40px; right: 40px; background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center; box-shadow: 2px 2px 3px #999; z-index: 100; display: flex; justify-content: center; align-items: center; }
 .whatsapp-float img { width: 35px; }
@@ -49,4 +58,13 @@ footer { background: #1F2C34; color: #fff; text-align: center; padding: 20px 0; 
 .message.user { background: #e2ffc7; color: #000; align-self: flex-end; }
 .chat-options { padding: 15px; border-top: 1px solid #eee; display: flex; flex-direction: column; gap: 10px; }
 .chat-options button { background: #fff; border: 1px solid #007bff; color: #007bff; padding: 10px; border-radius: 20px; cursor: pointer; text-align: left; }
-@media(max-width: 1024px) { .widgets-grid { grid-template-columns: repeat(2, 1fr
+
+@media(max-width: 1024px) { .widgets-grid { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width: 768px) {
+    header nav { display: none; }
+    .hero h1 { font-size: 2.2rem; }
+    .widgets-grid { grid-template-columns: 1fr; }
+    .chat-widget { width: 90%; height: 70%; left: 5%; bottom: 120px; }
+    .chat-toggle { left: 20px; bottom: 20px; }
+    .whatsapp-float { right: 20px; bottom: 20px; }
+}
